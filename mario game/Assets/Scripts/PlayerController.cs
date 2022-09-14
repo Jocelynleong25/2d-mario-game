@@ -17,12 +17,16 @@ public class PlayerController : MonoBehaviour
     public float airTime;
     public float airTimeCounter;
 
+    private Animator theAnimator;
+
+
 
     // Start is called before the first
     // frame update
     void Start()
     {
         theRB2D = GetComponent<Rigidbody2D>();
+        theAnimator = GetComponent<Animator>();
 
         airTimeCounter = airTime; 
     }
@@ -50,7 +54,10 @@ public class PlayerController : MonoBehaviour
         if (canMove)
         {
             theRB2D.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * speed, theRB2D.velocity.y);
+
+            theAnimator.SetFloat("Speed", Mathf.Abs(theRB2D.velocity.x));
         }
+
     }
 
     void Jump()
@@ -82,6 +89,8 @@ public class PlayerController : MonoBehaviour
         {
             airTimeCounter = airTime;
         }
+
+        theAnimator.SetBool("Grounded", grounded);
     }
 }
 
