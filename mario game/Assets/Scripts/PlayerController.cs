@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
         {
             canMove = true;
         }
-
+        Debug.Log(theRB2D.position.y);
     }
 
     private void FixedUpdate()
@@ -47,6 +47,8 @@ public class PlayerController : MonoBehaviour
         
        MovePlayer();
        Jump();
+       Superjump();
+       Teleport();
     }
 
     void MovePlayer()
@@ -56,41 +58,57 @@ public class PlayerController : MonoBehaviour
             theRB2D.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * speed, theRB2D.velocity.y);
 
             theAnimator.SetFloat("Speed", Mathf.Abs(theRB2D.velocity.x));
+            Debug.Log("bla");
         }
 
     }
 
     void Jump()
     {
-        if(grounded == true)
-        {
+       
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
             {
-               theRB2D.velocity = new Vector2(theRB2D.velocity.x, jumpForce);
+                if(theRB2D.position.y < -3.98)
+                {
+                    theRB2D.velocity = new Vector2(theRB2D.velocity.x, jumpForce);
+            }
+                
+                
             }
 
-        }
+        
 
-        if(Input.GetKey(KeyCode.Space)|| Input.GetMouseButton(0))
-        {
-            if (airTimeCounter > 0)
-            {
-               theRB2D.velocity = new Vector2(theRB2D.velocity.x, jumpForce);
-                airTimeCounter -= Time.deltaTime;
-            }
-        }
-
-        if(Input.GetKeyUp(KeyCode.Space)|| Input.GetMouseButtonUp(0))
-        {
-            airTimeCounter = 0;
-        }
-
-        if(grounded)
-        {
-            airTimeCounter = airTime;
-        }
-
-        theAnimator.SetBool("Grounded", grounded);
     }
+
+    void Superjump()
+    {
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (theRB2D.position.y < -2)
+            {
+                theRB2D.velocity = new Vector2(theRB2D.velocity.x, 30);
+            }
+
+
+        }
+
+
+
+    }
+
+    void Teleport()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+
+            theRB2D.position = new Vector2(0, 0); 
+        }
+
+
+
+    }
+
 }
 
